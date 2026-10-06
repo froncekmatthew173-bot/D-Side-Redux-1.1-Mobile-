@@ -37,8 +37,8 @@
 
     <!--ENGINE CUSTOMIZATION-->
     <define name="MODS_ALLOWED" if="desktop || mobile" />
-    <define name="VIDEOS_ALLOWED" if="cpp && enable_videos" />
-    <define name="DISCORD_ALLOWED" unless="cpp"/>
+    <define name="VIDEOS_ALLOWED" if="cpp" />
+    <define name="DISCORD_ALLOWED" if="cpp" unless="ios"/>
 
     <!-- _____________________________ Path Settings ____________________________ -->
 
@@ -69,11 +69,11 @@
     <!--Core engine libraries-->
     <haxelib name="openfl"/>
 
-    <haxelib name="flixel"/>
-    <haxelib name="flixel-addons"/>
-    <haxelib name="flixel-ui"/>
+    <haxelib name="flixel" version="6.0.0"/>
+    <haxelib name="flixel-addons" version="3.3.2"/>
+    <haxelib name="flixel-ui" version="2.6.4"/>
 
-    <haxelib name="hscript-iris"/>
+    <haxelib name="hscript-iris" version="1.1.3"/>
 
     <haxelib name="flixel-animate"/>
     <haxelib name="moonchart"/>
@@ -90,11 +90,19 @@
 	<haxelib name="extension-androidtools" if="android"/>
 
     <section if="desktop">
-	    <!-- <haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED" version="1.2.4"/> -->
+	    <haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED" version="1.2.4"/>
     </section>
     <haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 
     <!-- ______________________________ macros _____________________________ -->
+
+    <haxeflag name="--macro" value="addMetadata('@:build(funkin.backend.macro.FlxMacro.buildFlxSprite())', 'flixel.FlxSprite')" />
+    <haxeflag name="--macro" value="addMetadata('@:build(funkin.backend.macro.FlxMacro.buildFlxBasic())', 'flixel.FlxBasic')" />
+    <haxeflag name="--macro" value="addMetadata('@:build(funkin.backend.macro.FlxMacro.buildFlxCamera())', 'flixel.FlxCamera')" />
+
+    <haxeflag name="--macro" value="include('funkin')" />
+    <haxeflag name="--macro" value="include('flixel.addons',true,['flixel.addons.nape.*','flixel.addons.editors.*'])" />
+    <haxeflag name="--macro" value="include('flixel.effects',true)"/>
 
     <haxeflag name="-dce no" />
 
@@ -119,7 +127,6 @@
 
     <!--Enable for better crash handling/reporting-->
     <haxedef name="CRASH_HANDLER"/>
-    <haxedef name="FLX_NO_DEBUG"/>
     
     <!-- Mobile Shit -->
     <section if="android">
@@ -192,21 +199,4 @@
     <icon path="projFiles/icon/icon64.png" size='64'/>
     <icon path="projFiles/icon/icon128.png" size='128'/>
     <icon path="projFiles/icon/iconOG.png" />
-	
-	<section unless="PROFILE_BUILD">
-		<section if="mobile">
-			<config type="android" pslice-mono-icon="art/mobile/iconMono.png" />
-
-			<config type="ios" pslice-icon-dir="art/mobile/PSlice.appiconset" />
-			<icon path="art/mobile/iconAdaptive.png" if="android" />
-			<icon path="art/mobile/iconMobile.png" unless="android" />
-		</section>
-		<section unless="mobile">
-			<assets path='projFiles/icon/iconOG.png' rename='icon.png' if="linux" />
-			<icon path="projFiles/icon/icon16.png" size='16' />
-			<icon path="projFiles/icon/icon32.png" size='32' />
-			<icon path="projFiles/icon/icon64.png" size='64' />
-			<icon path="projFiles/icon/iconOG.png" />
-		</section>
-	</section>
 </project>
